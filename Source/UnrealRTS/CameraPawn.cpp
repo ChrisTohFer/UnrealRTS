@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "Engine/World.h"
 #include "Components/BillboardComponent.h"
+#include "Engine.h"
 
 // Sets default values
 ACameraPawn::ACameraPawn()
@@ -26,14 +27,7 @@ ACameraPawn::ACameraPawn()
 	//Create and set up camera
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	ApplyCameraHeightAndRotation();
-	/*FVector Facing = {
-		1.f,
-		0.f,
-		-1.f
-	};
-	FQuat Quaternion = Facing.ToOrientationQuat();
-	Camera->SetRelativeRotation(Quaternion);*/
-
+	
 }
 
 // Called when the game starts or when spawned
@@ -67,12 +61,14 @@ void ACameraPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 void ACameraPawn::MoveForward(float Value)
 {
 	AddMovementInput(FVector::ForwardVector, Value);
+
 }
 
 //Move left/right
 void ACameraPawn::MoveRight(float Value)
 {
 	AddMovementInput(FVector::RightVector, Value);
+	
 }
 
 //Move Up/down
@@ -87,6 +83,7 @@ void ACameraPawn::MoveDown(float Value)
 	}
 
 	ApplyCameraHeightAndRotation();
+
 }
 
 //Maintain the height of the actor above the terrain via raycast
@@ -103,7 +100,7 @@ void ACameraPawn::MaintainActorHeight()
 	}
 }
 
-
+//Called when camera height changes to determine rotation
 void ACameraPawn::ApplyCameraHeightAndRotation()
 {
 	Camera->SetRelativeLocation(FVector(CameraXOffset, 0.f, CameraHeight - ActorHeight));
