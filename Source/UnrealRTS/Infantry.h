@@ -24,6 +24,14 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 
+	//Reference to parent squad
+	UPROPERTY(VisibleAnywhere)
+	class ASquad* Squad;
+	//Relative position in the squad
+	UPROPERTY(VisibleAnywhere)
+	FVector SquadRelativePosition;
+
+
 	//Movement
 
 	//Current destination of the unit

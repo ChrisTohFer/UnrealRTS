@@ -2,6 +2,7 @@
 
 #include "Infantry.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Squad.h"
 
 
 // Sets default values
@@ -31,6 +32,12 @@ void AInfantry::BeginPlay()
 void AInfantry::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (Squad != nullptr)
+	{
+		Destination = Squad->GetActorLocation() + Squad->GetActorRotation().RotateVector(SquadRelativePosition);
+	}
+	
 
 	FVector DestinationRelativeVector = GetDestinationRelativeVector();
 	if (DestinationRelativeVector.Size2D() > StopRadius)

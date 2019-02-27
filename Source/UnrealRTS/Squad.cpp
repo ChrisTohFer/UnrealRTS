@@ -18,10 +18,18 @@ void ASquad::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FActorSpawnParameters Parameters;
-	AInfantry* Infantry = GetWorld()->SpawnActor<AInfantry>(UnitBlueprint, GetActorLocation(), FRotator::ZeroRotator);
-	//Parameters.te = UnitBlueprint;
-	//GetWorld()->SpawnActor()
+	for (int i = 0; i < Width; ++i)
+	{
+		for (int j = 0; j < Length; ++j)
+		{
+			FVector RelativePosition = SquadMemberRelativePosition(j, i);
+			
+
+			AInfantry* Infantry = GetWorld()->SpawnActor<AInfantry>(UnitBlueprint, GetActorLocation() + GetActorRotation().RotateVector(RelativePosition), FRotator::ZeroRotator);
+			Infantry->Squad = this;
+			Infantry->SquadRelativePosition = RelativePosition;
+		}
+	}
 
 }
 
@@ -30,5 +38,15 @@ void ASquad::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+FVector ASquad::SquadMemberRelativePosition(int x, int y)
+{
+	FVector RelativePosition;
+	RelativePosition.X = x * HorizontalSpacing;
+	RelativePosition.Y = y * LongitudinalSpacing;
+	RelativePosition.Z = 0.f;
+
+	return RelativePosition;
 }
 

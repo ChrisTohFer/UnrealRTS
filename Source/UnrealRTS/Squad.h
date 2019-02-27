@@ -39,4 +39,7 @@ public:
 	float LongitudinalSpacing = 100.f;
 
 	
+	//Function to determine position of squad member
+	FVector SquadMemberRelativePosition(int x, int y);
+
 };
