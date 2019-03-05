@@ -3,6 +3,7 @@
 #include "Infantry.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Squad.h"
+#include "ActorComponents/MovementInfantry.h"
 
 
 // Sets default values
@@ -12,11 +13,12 @@ AInfantry::AInfantry()
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Set character movement
-	UCharacterMovementComponent* Movement = GetCharacterMovement();
-	Movement->MaxWalkSpeed = DefaultMaxSpeed;
-	Movement->MaxAcceleration = DefaultAcceleration;
-	Movement->BrakingDecelerationWalking = DefaultAcceleration;
+	UCharacterMovementComponent* CharacterMovement = GetCharacterMovement();
+	CharacterMovement->MaxWalkSpeed = DefaultMaxSpeed;
+	CharacterMovement->MaxAcceleration = DefaultAcceleration;
+	CharacterMovement->BrakingDecelerationWalking = DefaultAcceleration;
 	
+	Movement = CreateDefaultSubobject<UMovementInfantry>("DestinationMovement");
 }
 
 // Called when the game starts or when spawned
@@ -24,8 +26,6 @@ void AInfantry::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//Set destination to current location
-	Destination = GetActorLocation();
 }
 
 // Called every frame
@@ -33,52 +33,10 @@ void AInfantry::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//Set destination of movement component based on squad location and rotation
 	if (Squad != nullptr)
 	{
-		Destination = Squad->GetActorLocation() + Squad->GetActorRotation().RotateVector(SquadRelativePosition);
+		Movement->SetDestination(Squad->GetActorLocation() + Squad->GetActorRotation().RotateVector(SquadRelativePosition));
 	}
 	
-
-	FVector DestinationRelativeVector = GetDestinationRelativeVector();
-	if (DestinationRelativeVector.Size2D() > StopRadius)
-	{
-		MoveTowardsDestination(DestinationRelativeVector);
-	}
-
 }
-
-FVector AInfantry::GetDestinationRelativeVector()
-{
-	FVector RelativeVector = Destination - GetActorLocation();
-	RelativeVector.Z = 0.f;
-
-	return RelativeVector;
-}
-
-void AInfantry::MoveTowardsDestination(FVector Direction)
-{
-	SetActorRotation(Direction.ToOrientationQuat());
-
-	AddMovementInput(Direction);
-}
-
-
-
-
-
-
-
-
-
-/*void AInfantry::MoveForward(float Value)
-{
-	AddMovementInput(GetActorForwardVector(), Value);
-}
-
-void AInfantry::MoveRight(float Value)
-{
-	AddMovementInput(GetActorRightVector(), Value);
-}*/
-
-
-

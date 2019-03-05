@@ -32,29 +32,13 @@ public:
 	FVector SquadRelativePosition;
 
 
-	//Movement
-
-	//Current destination of the unit
-	UPROPERTY(EditAnywhere)
-	FVector Destination;
-
 protected:
 	
-	//Return FVector pointing towards destination (excluding z component);
-	FVector GetDestinationRelativeVector();
-
-	//Move the unit towards the destination
-	void MoveTowardsDestination(FVector Direction);
-
 	//Default movement variables
 	float DefaultMaxSpeed = 500.f;
 	float DefaultAcceleration = 1000.f;
-	
-	//How close to destination must unit be before it will stop moving
+
 	UPROPERTY(EditAnywhere)
-	float StopRadius = 100.f;
-
-
-	//
+	class UDestinationMovement* Movement;
 
 };
