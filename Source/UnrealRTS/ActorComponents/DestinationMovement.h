@@ -38,7 +38,7 @@ protected:
 	AActor* ParentActor;
 
 	//Method to move actor towards the destination
-	virtual void MoveToDestination(FVector Direction);
+	virtual void MoveToDestination(FVector Direction, float DeltaTime);
 	//Method to return vector giving difference between actor location and destination
 	FVector VectorToDestination();
 

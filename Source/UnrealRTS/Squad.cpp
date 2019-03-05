@@ -4,6 +4,7 @@
 #include "Engine/World.h"
 #include "Engine/Blueprint.h"
 #include "Infantry.h"
+#include "ActorComponents/MovementSquad.h"
 
 // Sets default values
 ASquad::ASquad()
@@ -11,6 +12,7 @@ ASquad::ASquad()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	Movement = CreateDefaultSubobject<UMovementSquad>("DestinationMovement");
 }
 
 // Called when the game starts or when spawned
@@ -38,6 +40,7 @@ void ASquad::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	Movement->SetDestination(Destination);
 }
 
 FVector ASquad::SquadMemberRelativePosition(int x, int y)

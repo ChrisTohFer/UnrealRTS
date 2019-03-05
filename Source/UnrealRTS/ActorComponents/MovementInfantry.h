@@ -23,6 +23,8 @@ protected:
 	//
 	ACharacter* ParentCharacter;
 	//
-	virtual void MoveToDestination(FVector Direction) override;
+	class UCharacterMovementComponent* MoveComponent;
+	//
+	virtual void MoveToDestination(FVector Direction, float DeltaTime) override;
 	
 };

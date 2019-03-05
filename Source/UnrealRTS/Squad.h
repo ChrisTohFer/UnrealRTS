@@ -42,4 +42,14 @@ public:
 	//Function to determine position of squad member
 	FVector SquadMemberRelativePosition(int x, int y);
 
+	UPROPERTY(EditAnywhere)
+	class UDestinationMovement* Movement;
+
+
+
+	UPROPERTY(EditAnywhere)
+	FVector Destination;
+
+
+
 };

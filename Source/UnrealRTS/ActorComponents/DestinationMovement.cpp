@@ -33,11 +33,11 @@ void UDestinationMovement::TickComponent(float DeltaTime, ELevelTick TickType, F
 	FVector Direction = VectorToDestination();
 	if (Direction.Size() > DestinationCutoffDistance)
 	{
-		MoveToDestination(Direction);
+		MoveToDestination(Direction, DeltaTime);
 	}
 }
 
-void UDestinationMovement::MoveToDestination(FVector Direction)
+void UDestinationMovement::MoveToDestination(FVector Direction, float DeltaTime)
 {
 	//Implement in derived classes
 }

@@ -2,6 +2,7 @@
 
 #include "MovementInfantry.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values for this component's properties
 UMovementInfantry::UMovementInfantry()
@@ -18,13 +19,14 @@ void UMovementInfantry::BeginPlay()
 	Super::BeginPlay();
 
 	ParentCharacter = dynamic_cast<ACharacter*>(ParentActor);
+	MoveComponent = ParentCharacter->GetCharacterMovement();
 }
 
-void UMovementInfantry::MoveToDestination(FVector Direction)
+void UMovementInfantry::MoveToDestination(FVector Direction, float DeltaTime)
 {
 	if (ParentCharacter != nullptr)
 	{
 		ParentCharacter->SetActorRotation(Direction.ToOrientationQuat());
-		ParentCharacter->AddMovementInput(Direction);
+		ParentCharacter->AddMovementInput(Direction);// , Direction.Size() / MoveComponent->MaxWalkSpeed);
 	}
 }
