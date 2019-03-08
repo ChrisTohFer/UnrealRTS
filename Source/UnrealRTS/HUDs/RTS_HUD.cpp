@@ -2,6 +2,7 @@
 
 #include "RTS_HUD.h"
 #include "GameFramework/PlayerController.h"
+#include "Squad.h"
 
 void ARTS_HUD::DrawHUD()
 {
@@ -19,6 +20,10 @@ void ARTS_HUD::DrawHUD()
 
 		//Draw box
 		DrawRect(TransparentRed, BoxInitialPosition.X, BoxInitialPosition.Y, Width, Height);
+
+		//Fill selected array with squads
+		SelectedArray.Empty();
+		GetActorsInSelectionRectangle<ASquad>(BoxInitialPosition, BoxCurrentPosition, SelectedArray, true, true);
 	}
 }
 
@@ -27,4 +32,9 @@ FVector2D ARTS_HUD::GetCurrentMousePosition()
 	float MousePosX, MousePosY;
 	GetOwningPlayerController()->GetMousePosition(MousePosX, MousePosY);
 	return FVector2D(MousePosX, MousePosY);
+}
+
+TArray<class ASquad*>& ARTS_HUD::GetSelectedArray()
+{
+	return SelectedArray;
 }

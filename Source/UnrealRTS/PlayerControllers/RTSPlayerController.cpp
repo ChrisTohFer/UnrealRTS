@@ -3,6 +3,7 @@
 #include "RTSPlayerController.h"
 #include "Engine.h"
 #include "HUDs/RTS_HUD.h"
+#include "Squad.h"
 
 //Show cursor
 ARTSPlayerController::ARTSPlayerController()
@@ -37,7 +38,8 @@ void ARTSPlayerController::LeftMouseButtonDown()
 
 void ARTSPlayerController::LeftMouseButtonUp()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, "Left up");
+	TArray<ASquad*> SelectedArray = Hud->GetSelectedArray();
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, "Left up, Selected " + FString::FromInt(SelectedArray.Num()));
 	Hud->bBoxVisible = false;
 }
 
@@ -48,5 +50,21 @@ void ARTSPlayerController::RightMouseButtonDown()
 
 void ARTSPlayerController::RightMouseButtonUp()
 {
+	TArray<ASquad*> SelectedArray = Hud->GetSelectedArray();
+
+	FVector MoveDestination;
+	FHitResult HitResult;
+	GetHitResultUnderCursor(ECC_WorldStatic, false, HitResult);
+
+	MoveDestination = HitResult.Location;
+
+	for (int i = 0; i < SelectedArray.Num(); ++i)
+	{
+		if (SelectedArray[i] != nullptr)
+		{
+			SelectedArray[i]->Destination = MoveDestination;
+		}
+	}
+
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, "Right up");
 }

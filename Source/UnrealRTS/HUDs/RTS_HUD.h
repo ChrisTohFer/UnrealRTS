@@ -28,9 +28,13 @@ public:
 	//Return the current mouse position
 	FVector2D GetCurrentMousePosition();
 
+	//
+	TArray<class ASquad*>& GetSelectedArray();
+
 protected:
 
-	
+	//
+	TArray<class ASquad*> SelectedArray;
 
 	
 	
