@@ -5,6 +5,7 @@
 #include "Infantry.h"
 #include "ActorComponents/MovementSquad.h"
 #include "StaticClasses/StaticWorldActor.h"
+#include "Engine/World.h"
 
 // Sets default values
 ASquad::ASquad()
