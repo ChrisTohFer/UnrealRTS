@@ -5,8 +5,7 @@
 #include "Components/InputComponent.h"
 #include "Components/BillboardComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Engine/World.h"
-#include "Engine.h"
+#include "StaticClasses/StaticWorldActor.h"
 
 // Sets default values
 ATopDownCameraPawn::ATopDownCameraPawn()
@@ -62,21 +61,11 @@ void ATopDownCameraPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 //Sets the height of the actor to the height of the terrain
 void ATopDownCameraPawn::SetActorToTerrainHeight()
 {
-	FVector StartTrace = GetActorLocation();
-	FVector EndTrace = StartTrace;
-
-	StartTrace.Z = -10000.f;
-	EndTrace.Z = 10000.f;
-
-	FHitResult HitResult;
-
-	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartTrace, EndTrace, ECC_WorldStatic))
+	TPair<bool, FVector> GroundHeight = AStaticWorldActor::GroundLocationAtPosition(GetActorLocation());
+	
+	if (GroundHeight.Key)
 	{
-		float GroundHeight = StartTrace.Z + HitResult.Distance;
-		
-		FVector ActorLocation = GetActorLocation();
-		ActorLocation.Z = GroundHeight;
-		SetActorLocation(ActorLocation);
+		SetActorLocation(GroundHeight.Value);
 	}
 }
 

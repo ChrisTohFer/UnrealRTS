@@ -3,6 +3,7 @@
 #include "RTSModeBase.h"
 #include "PlayerControllers/RTSPlayerController.h"
 #include "HUDs/RTS_HUD.h"
+#include "StaticClasses/StaticWorldActor.h"
 
 //Constructor to set defaults
 ARTSModeBase::ARTSModeBase()
@@ -19,4 +20,8 @@ ARTSModeBase::ARTSModeBase()
 
 }
 
-
+void ARTSModeBase::BeginPlay()
+{
+	//
+	GetWorld()->SpawnActor<AStaticWorldActor>();
+}

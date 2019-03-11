@@ -18,5 +18,6 @@ public:
 	//Constructor to set defaults
 	ARTSModeBase();
 	
+	virtual void BeginPlay() override;
 	
 };

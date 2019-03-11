@@ -48,6 +48,16 @@ void ARTSPlayerController::RightMouseButtonDown()
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, "Right down");
 }
 
+
+//Class to describe order
+class OrderAction
+{
+public:
+	ASquad* Target;
+	FVector Location;
+};
+
+//Assign orders to selection
 void ARTSPlayerController::RightMouseButtonUp()
 {
 	TArray<ASquad*> SelectedArray = Hud->GetSelectedArray();
@@ -55,16 +65,23 @@ void ARTSPlayerController::RightMouseButtonUp()
 	FVector MoveDestination;
 	FHitResult HitResult;
 	GetHitResultUnderCursor(ECC_WorldStatic, false, HitResult);
+	
+	OrderAction Order;
+	Order.Target = Cast<ASquad>(HitResult.Actor);
+	Order.Location = HitResult.Location;
 
-	MoveDestination = HitResult.Location;
-
-	for (int i = 0; i < SelectedArray.Num(); ++i)
+	if (Order.Target != nullptr)
 	{
-		if (SelectedArray[i] != nullptr)
+		//Code for attacking/following
+	}
+	else
+	{
+		for (int i = 0; i < SelectedArray.Num(); ++i)
 		{
-			SelectedArray[i]->Destination = MoveDestination;
+			if (SelectedArray[i] != nullptr)
+			{
+				SelectedArray[i]->Destination = Order.Location;
+			}
 		}
 	}
-
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, "Right up");
 }

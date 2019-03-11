@@ -35,7 +35,7 @@ protected:
 	void LeftMouseButtonUp();
 	//
 	void RightMouseButtonDown();
-	//
+	//Assign orders to selection
 	void RightMouseButtonUp();
 
 	
