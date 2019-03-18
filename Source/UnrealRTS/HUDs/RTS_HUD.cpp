@@ -23,7 +23,7 @@ void ARTS_HUD::DrawHUD()
 
 		//Fill selected array with squads
 		SelectedArray.Empty();
-		GetActorsInSelectionRectangle<ASquad>(BoxInitialPosition, BoxCurrentPosition, SelectedArray, true, true);
+		GetActorsInSelectionRectangle<ASquad>(BoxInitialPosition, BoxCurrentPosition, SelectedArray, true);
 	}
 }
 

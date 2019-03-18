@@ -19,7 +19,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	//
+	//Spawn units to occupy squad and set their relative positions
 	void SpawnSquadUnits();
 
 public:	

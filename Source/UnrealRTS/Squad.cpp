@@ -25,6 +25,7 @@ void ASquad::BeginPlay()
 	SpawnSquadUnits();
 }
 
+//Spawn units to occupy squad and set their relative positions
 void ASquad::SpawnSquadUnits()
 {
 	for (int i = 0; i < Width; ++i)
@@ -50,7 +51,7 @@ void ASquad::Tick(float DeltaTime)
 	TPair<bool, FVector> GroundLocation = AStaticWorldActor::GroundLocationAtPosition(GetActorLocation());
 	if (GroundLocation.Key)
 	{
-		SetActorLocation(GroundLocation.Value);
+		SetActorLocation(GroundLocation.Value + FVector(0.f, 0.f, SquadHeightAboveGround));
 	}
 }
 

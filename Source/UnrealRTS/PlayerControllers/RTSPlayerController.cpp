@@ -11,12 +11,12 @@ ARTSPlayerController::ARTSPlayerController()
 	bShowMouseCursor = true;
 }
 
-//Bind mouse actions
+//Get Hud reference
 void ARTSPlayerController::BeginPlay()
 {
 	Hud = Cast<ARTS_HUD>(GetHUD());
 }
-
+//Bind mouse actions
 void ARTSPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -28,21 +28,21 @@ void ARTSPlayerController::SetupInputComponent()
 	InputComponent->BindAction("RightMouse", IE_Released, this, &ARTSPlayerController::RightMouseButtonUp);
 }
 
-
+//Unit selection begin
 void ARTSPlayerController::LeftMouseButtonDown()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, "Left down");
 	Hud->BoxInitialPosition = Hud->GetCurrentMousePosition();
 	Hud->bBoxVisible = true;
 }
-
+//Unit selection end
 void ARTSPlayerController::LeftMouseButtonUp()
 {
 	TArray<ASquad*> SelectedArray = Hud->GetSelectedArray();
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, "Left up, Selected " + FString::FromInt(SelectedArray.Num()));
 	Hud->bBoxVisible = false;
 }
-
+//
 void ARTSPlayerController::RightMouseButtonDown()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, "Right down");
