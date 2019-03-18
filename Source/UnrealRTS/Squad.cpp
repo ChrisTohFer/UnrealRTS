@@ -28,11 +28,11 @@ void ASquad::BeginPlay()
 //Spawn units to occupy squad and set their relative positions
 void ASquad::SpawnSquadUnits()
 {
-	for (int i = 0; i < Width; ++i)
+	for (int i = 0; i < Length; ++i)
 	{
-		for (int j = 0; j < Length; ++j)
+		for (int j = 0; j < Width; ++j)
 		{
-			FVector RelativePosition = SquadMemberRelativePosition(j, i);
+			FVector RelativePosition = SquadMemberRelativePosition(i, j);
 
 			AInfantry* Infantry = GetWorld()->SpawnActor<AInfantry>(UnitBlueprint, GetActorLocation() + GetActorRotation().RotateVector(RelativePosition), FRotator::ZeroRotator);
 			Infantry->Squad = this;
@@ -55,11 +55,12 @@ void ASquad::Tick(float DeltaTime)
 	}
 }
 
+//Calculate the position of a squad member from x and y coordinates
 FVector ASquad::SquadMemberRelativePosition(int x, int y)
 {
 	FVector RelativePosition;
-	RelativePosition.X = ((float)x - (float)Width / 2.f)* HorizontalSpacing;
-	RelativePosition.Y = ((float)y - (float)Length / 2.f) * LongitudinalSpacing;
+	RelativePosition.X = (static_cast<float>(x) - static_cast<float>(Length - 1) / 2.f) * LongitudinalSpacing;
+	RelativePosition.Y = (static_cast<float>(y) - static_cast<float>(Width - 1) / 2.f)* HorizontalSpacing;
 	RelativePosition.Z = 0.f;
 
 	return RelativePosition;

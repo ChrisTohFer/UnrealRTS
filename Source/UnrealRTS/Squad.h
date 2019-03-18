@@ -42,7 +42,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	float SquadHeightAboveGround = 500.f;
 	
-	//Function to determine position of squad member
+	//Calculate the position of a squad member from x and y coordinates
 	FVector SquadMemberRelativePosition(int x, int y);
 
 	//Pointer to DestinationMovement component
