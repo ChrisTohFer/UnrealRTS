@@ -27,6 +27,7 @@ void ARTS_HUD::DrawHUD()
 	}
 }
 
+//Return the current mouse position
 FVector2D ARTS_HUD::GetCurrentMousePosition()
 {
 	float MousePosX, MousePosY;
@@ -34,7 +35,8 @@ FVector2D ARTS_HUD::GetCurrentMousePosition()
 	return FVector2D(MousePosX, MousePosY);
 }
 
-TArray<class ASquad*>& ARTS_HUD::GetSelectedArray()
+//Return a reference to selected units array
+UnitSelection& ARTS_HUD::GetSelectedArray()
 {
 	return SelectedArray;
 }

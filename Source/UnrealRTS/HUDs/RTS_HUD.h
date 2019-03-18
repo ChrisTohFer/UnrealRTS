@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "UnitSelection.h"
 #include "RTS_HUD.generated.h"
 
 /**
@@ -28,13 +29,13 @@ public:
 	//Return the current mouse position
 	FVector2D GetCurrentMousePosition();
 
-	//
-	TArray<class ASquad*>& GetSelectedArray();
+	//Return a reference to selected units array
+	UnitSelection& GetSelectedArray();
 
 protected:
 
-	//
-	TArray<class ASquad*> SelectedArray;
+	//Array extended from TArray<ASquad*> to provide some extra functionality
+	UnitSelection SelectedArray;
 
 	
 	

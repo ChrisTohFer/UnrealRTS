@@ -38,7 +38,7 @@ void ARTSPlayerController::LeftMouseButtonDown()
 //Unit selection end
 void ARTSPlayerController::LeftMouseButtonUp()
 {
-	TArray<ASquad*> SelectedArray = Hud->GetSelectedArray();
+	TArray<ASquad*>& SelectedArray = Hud->GetSelectedArray();
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, "Left up, Selected " + FString::FromInt(SelectedArray.Num()));
 	Hud->bBoxVisible = false;
 }
@@ -60,8 +60,7 @@ public:
 //Assign orders to selection
 void ARTSPlayerController::RightMouseButtonUp()
 {
-	TArray<ASquad*> SelectedArray = Hud->GetSelectedArray();
-
+	//Create order based on context of right click
 	FVector MoveDestination;
 	FHitResult HitResult;
 	GetHitResultUnderCursor(ECC_WorldStatic, false, HitResult);
@@ -76,12 +75,8 @@ void ARTSPlayerController::RightMouseButtonUp()
 	}
 	else
 	{
-		for (int i = 0; i < SelectedArray.Num(); ++i)
-		{
-			if (SelectedArray[i] != nullptr)
-			{
-				SelectedArray[i]->Destination = Order.Location;
-			}
-		}
+		UnitSelection& Selection = Hud->GetSelectedArray();
+		Selection.RemoveNullPointers();
+		Selection.AssignMoveOrder(Order.Location);
 	}
 }
