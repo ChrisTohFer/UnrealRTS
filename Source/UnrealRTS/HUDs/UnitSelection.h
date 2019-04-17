@@ -21,4 +21,6 @@ public:
 	//Order selected units to move to destination and form a line
 	void AssignMoveOrder(FVector Destination);
 	
+	//Get width of all squads lined up
+	float GetSelectionWidth();
 };

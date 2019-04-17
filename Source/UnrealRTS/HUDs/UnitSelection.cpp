@@ -58,6 +58,12 @@ bool operator<(const SquadMoveSort& A, const SquadMoveSort& B)
 //Order selected units to move to destination and form a line
 void UnitSelection::AssignMoveOrder(FVector Destination)
 {
+	RemoveNullPointers();
+	if (Num() == 0)
+	{
+		return;
+	}
+
 	FVector AveragePosition = GetAveragePosition();
 
 	//Get length and angle of move
@@ -65,13 +71,8 @@ void UnitSelection::AssignMoveOrder(FVector Destination)
 	(Destination - AveragePosition).ToDirectionAndLength(Direction, Distance);
 
 	//Define spread of selected squads
-	FVector SpreadVector; float SpreadDistance = 100.f;
-	if (Num() > 0 && operator[](0) != nullptr)
-	{
-		SpreadDistance = operator[](0)->TotalSize().Y + 50.f;
-	}
-	SpreadVector = Direction * SpreadDistance;
-	SpreadVector = SpreadVector.RotateAngleAxis(90.f, FVector::UpVector);
+	FVector SpreadVector = Direction.RotateAngleAxis(90.f, FVector::UpVector);
+	float SelectionWidth = GetSelectionWidth();
 	
 	//Create and sort array based on relative positions of squads
 	//This sort reduces collisions between the squads when travelling to destination
@@ -95,9 +96,36 @@ void UnitSelection::AssignMoveOrder(FVector Destination)
 	MoveArray.Sort();
 
 	//Set destination of each squad
-	
+	float RelativeSquadDestination = -SelectionWidth / 2.f + MoveArray[0].Pointer->TotalSize().Y / 2.f;
 	for (int i = 0; i < NSquads; ++i)
 	{
-		MoveArray[i].Pointer->Destination = Destination + SpreadVector * (i - static_cast<float>(N) / 2.f);
+		MoveArray[i].Pointer->Destination = Destination + SpreadVector * RelativeSquadDestination;
+
+		if (i < NSquads - 1)
+		{
+			RelativeSquadDestination += (MoveArray[i].Pointer->TotalSize().Y + MoveArray[i + 1].Pointer->TotalSize().Y) / 2.f + 50.f;
+		}
 	}
+}
+
+//Get width of all squads lined up`
+float UnitSelection::GetSelectionWidth()
+{
+	float TotalWidth = 0.f;
+
+	for (int i = 0; i < Num(); ++i)
+	{
+		ASquad* Squad = operator[](i);
+		if (Squad != nullptr)
+		{
+			TotalWidth += Squad->TotalSize().Y + 50.f;
+		}
+	}
+
+	if (TotalWidth > 0.f)
+	{
+		TotalWidth -= 50.f;
+	}
+
+	return TotalWidth;
 }

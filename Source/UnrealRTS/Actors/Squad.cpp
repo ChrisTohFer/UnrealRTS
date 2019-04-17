@@ -70,6 +70,6 @@ FVector ASquad::SquadMemberRelativePosition(int x, int y)
 //Return the size of the squad
 FVector2D ASquad::TotalSize()
 {
-	return FVector2D((Width + 1) * HorizontalSpacing, (Length + 1) * HorizontalSpacing);
+	return FVector2D((Length + 1) * LongitudinalSpacing, (Width + 1) * HorizontalSpacing);
 }
 
