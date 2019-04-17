@@ -99,7 +99,7 @@ void UnitSelection::AssignMoveOrder(FVector Destination)
 	float RelativeSquadDestination = -SelectionWidth / 2.f + MoveArray[0].Pointer->TotalSize().Y / 2.f;
 	for (int i = 0; i < NSquads; ++i)
 	{
-		MoveArray[i].Pointer->Destination = Destination + SpreadVector * RelativeSquadDestination;
+		MoveArray[i].Pointer->SetDestination(Destination + SpreadVector * RelativeSquadDestination);
 
 		if (i < NSquads - 1)
 		{

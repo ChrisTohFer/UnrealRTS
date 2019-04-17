@@ -37,6 +37,8 @@ void ASquad::SpawnSquadUnits()
 			AInfantry* Infantry = GetWorld()->SpawnActor<AInfantry>(UnitBlueprint, GetActorLocation() + GetActorRotation().RotateVector(RelativePosition), FRotator::ZeroRotator);
 			Infantry->Squad = this;
 			Infantry->SquadRelativePosition = RelativePosition;
+
+			SquadMembers.Add(Infantry);
 		}
 	}
 }
@@ -45,8 +47,6 @@ void ASquad::SpawnSquadUnits()
 void ASquad::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	Movement->SetDestination(Destination);
 	
 	bool ValidCheck;
 	FVector GroundLocation = StaticMethods::GroundLocationAtPosition(GetWorld(), GetActorLocation(), ValidCheck);
@@ -71,5 +71,78 @@ FVector ASquad::SquadMemberRelativePosition(int x, int y)
 FVector2D ASquad::TotalSize()
 {
 	return FVector2D((Length + 1) * LongitudinalSpacing, (Width + 1) * HorizontalSpacing);
+}
+//Method to set the destination
+void ASquad::SetDestination(FVector Value)
+{
+	Destination = Value;
+
+	SortMemberPositions();
+	Movement->SetDestination(Destination);
+}
+
+
+//Class for sorting squad members by position
+class SortableInfantry
+{
+public:
+	AInfantry* Infantry;
+	float Offset;
+};
+bool operator<(const SortableInfantry& First, const SortableInfantry Second)
+{
+	return First.Offset < Second.Offset;
+}
+
+//Sort the squad members and assign positions
+void ASquad::SortMemberPositions()
+{
+	//Get travel and perpendicular vectors
+	FVector TravelVector = Destination - GetActorLocation();
+	TravelVector.Z = 0.f;
+	FVector PerpendicularDirection = TravelVector.RotateAngleAxis(90.f, FVector::UpVector);
+
+	//Create array to sort infantry in
+	TArray<SortableInfantry> SortableArray;
+	
+	//Go through squad members, calculate dot product of their position and perpendicular direction and add to array
+	for (int i = 0; i < SquadMembers.Num(); ++i)
+	{
+		SortableInfantry NextInfantry;
+		NextInfantry.Infantry = SquadMembers[i];
+		
+		if (NextInfantry.Infantry != nullptr)
+		{
+			FVector ActorLocation2D = NextInfantry.Infantry->GetActorLocation();
+			ActorLocation2D.Z = 0.f;
+			NextInfantry.Offset = FVector::DotProduct(PerpendicularDirection, ActorLocation2D);
+			SortableArray.Add(NextInfantry);
+		}
+	}
+	SortableArray.Sort();
+
+	//Assign new positions to the sorted members
+	for (int i = 0; i < SortableArray.Num(); i += Length)
+	{
+		//Create sub array for each column and sort it
+		int SubgroupN = FMath::Min(i + Length, SortableArray.Num());
+		TArray<SortableInfantry> SubArray;
+		for (int j = i; j < SubgroupN; ++j)
+		{
+			FVector ActorLocation2D = SortableArray[j].Infantry->GetActorLocation();
+			ActorLocation2D.Z = 0.f;
+			SortableArray[j].Offset = FVector::DotProduct(TravelVector, ActorLocation2D);
+			SubArray.Add(SortableArray[j]);
+		}
+		SubArray.Sort();
+
+		//Assign positions to column members
+		int y = i / Length;
+		for (int j = 0; j < Length; ++j)
+		{
+			SubArray[j].Infantry->SquadRelativePosition = SquadMemberRelativePosition(j, y);
+		}
+	}
+
 }
 

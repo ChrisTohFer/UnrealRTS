@@ -23,6 +23,8 @@ void UMovementSquad::MoveToDestination(FVector Direction, float DeltaTime)
 	ParentActor->SetActorLocation(Location);
 
 	//Rotate to face direction
+
+	/*
 	FRotator Rotation = ParentActor->GetActorRotation();
 	float Angle = Direction.Rotation().Yaw - Rotation.Yaw;
 	float AbsAngle = abs(Angle);
@@ -47,5 +49,7 @@ void UMovementSquad::MoveToDestination(FVector Direction, float DeltaTime)
 	}
 
 	Rotation.Yaw = Direction.Rotation().Yaw - Angle;
-	ParentActor->SetActorRotation(Rotation);
+	*/
+
+	ParentActor->SetActorRotation(Direction.Rotation());
 }

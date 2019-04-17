@@ -45,6 +45,14 @@ public:
 	//Calculate the position of a squad member from x and y coordinates
 	FVector SquadMemberRelativePosition(int x, int y);
 
+	//Return the size of the squad
+	FVector2D TotalSize();
+
+	//Method to set the destination
+	UFUNCTION()
+	void SetDestination(FVector Value);
+
+protected:
 	//Pointer to DestinationMovement component
 	UPROPERTY(EditAnywhere)
 	class UDestinationMovement* Movement;
@@ -53,7 +61,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	FVector Destination;
 
-	//Return the size of the squad
-	FVector2D TotalSize();
+	//Array of squad members
+	UPROPERTY()
+	TArray<AInfantry*> SquadMembers;
+
+	//Sort the squad members and assign positions
+	UFUNCTION()
+	void SortMemberPositions();
 
 };
