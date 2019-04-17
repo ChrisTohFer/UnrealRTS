@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Squad.h"
+#include "Actors/Squad.h"
 
 /**
  * 

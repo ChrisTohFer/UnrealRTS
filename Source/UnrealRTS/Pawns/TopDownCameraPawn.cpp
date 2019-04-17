@@ -5,7 +5,7 @@
 #include "Components/InputComponent.h"
 #include "Components/BillboardComponent.h"
 #include "Camera/CameraComponent.h"
-#include "StaticClasses/StaticWorldActor.h"
+#include "StaticClasses/StaticMethods.h"
 
 // Sets default values
 ATopDownCameraPawn::ATopDownCameraPawn()
@@ -61,14 +61,16 @@ void ATopDownCameraPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 //Sets the height of the actor to the height of the terrain
 void ATopDownCameraPawn::SetActorToTerrainHeight()
 {
-	TPair<bool, FVector> GroundHeight = AStaticWorldActor::GroundLocationAtPosition(GetActorLocation());
+	bool ValidCheck;
+	FVector GroundHeight = StaticMethods::GroundLocationAtPosition(GetWorld(), GetActorLocation(), ValidCheck);
 	
-	if (GroundHeight.Key)
+	if (ValidCheck)
 	{
-		SetActorLocation(GroundHeight.Value);
+		SetActorLocation(GroundHeight);
 	}
 }
 
+//Update the position which the camera will move towards on tick()
 void ATopDownCameraPawn::UpdateTargetPosition()
 {
 	FVector TargetPosition = FVector::UpVector;
@@ -78,6 +80,7 @@ void ATopDownCameraPawn::UpdateTargetPosition()
 	CameraTargetPosition = TargetPosition;
 }
 
+//Called on tick() to move camera towards the target position
 void ATopDownCameraPawn::UpdateCameraRelativePosition(float DeltaTime)
 {
 	//Get the distance and direction to the target position
@@ -97,16 +100,19 @@ void ATopDownCameraPawn::UpdateCameraRelativePosition(float DeltaTime)
 	}
 }
 
+//Input method to scroll the camera forwards/backwards
 void ATopDownCameraPawn::MoveForward(float Value)
 {
 	AddMovementInput(FVector::ForwardVector, Value);
 }
 
+//Input method to scroll the camera left/right
 void ATopDownCameraPawn::MoveRight(float Value)
 {
 	AddMovementInput(FVector::RightVector, Value);
 }
 
+//Input method to scroll the camera in/out
 void ATopDownCameraPawn::ZoomIn(float Value)
 {
 	BoomLength *= pow(ZoomRateExponential, -Value);

@@ -3,7 +3,7 @@
 #include "RTSPlayerController.h"
 #include "Engine.h"
 #include "HUDs/RTS_HUD.h"
-#include "Squad.h"
+#include "Actors/Squad.h"
 
 //Show cursor
 ARTSPlayerController::ARTSPlayerController()

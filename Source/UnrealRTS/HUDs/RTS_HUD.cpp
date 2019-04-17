@@ -2,7 +2,7 @@
 
 #include "RTS_HUD.h"
 #include "GameFramework/PlayerController.h"
-#include "Squad.h"
+#include "Actors/Squad.h"
 
 void ARTS_HUD::DrawHUD()
 {
